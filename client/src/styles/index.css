@@ -56,9 +56,11 @@ body {
   margin-right: 0.5rem;
   cursor: pointer;
   font-weight: bold;
+  display: flex;
+  gap: 15px;
 }
 
-.main-nav-item:hover {
+.main-nav-item__hover:hover {
   text-decoration: underline;
 }
 
@@ -261,6 +263,24 @@ body {
   color: #fff;
   font-weight: bold;
   padding: 10px;
+  cursor: pointer;
+  min-width: 100px;
+}
+
+.edit-button-name {
+  font-size: 16px;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.edit-button-gap {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.user-name {
+  text-transform: capitalize;
 }
 
 .header {

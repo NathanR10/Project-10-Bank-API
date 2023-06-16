@@ -2,17 +2,17 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation  } from 'react-router-dom'
-import { logoutSuccess } from '../reducers/authSlice'
+import { logout } from '../reducers/authSlice'
 
 export default function Header () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const token = useSelector((state) => state.auth.token)
+  const isLogged = useSelector(state => state.auth.isLogged)
+  const firstName = useSelector(state => state.auth.firstName)
 
   const handleLogout = () => {
-    dispatch(logoutSuccess())
-    // remove localStorage
+    dispatch(logout())
     return navigate('/')
   }
 
@@ -28,13 +28,14 @@ export default function Header () {
     </Link>
     <div className="main-nav-item">
       {
-        !token
+        !isLogged
         ? <Link className="main-nav-item" to="/login">
             <span><i className="fa fa-user-circle"></i> Sign In</span>
           </Link>
         : location.pathname === '/user'
-          ? <div className="main-nav-item" onClick={handleLogout}>
-              <span><i className="fa fa-user-circle"></i> Sign Out</span>
+          ? <div className="main-nav-item">
+              <span><i className="fa fa-user-circle"></i> {firstName}</span>
+              <span onClick={handleLogout} className='main-nav-item__hover'><i className="fa fa-sign-out"></i> Sign Out</span>
             </div>
           : <Link className="main-nav-item" to="/user">
               <span><i className="fa fa-user-circle"></i> My Account</span>

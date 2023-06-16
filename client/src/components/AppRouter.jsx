@@ -18,7 +18,6 @@ function AppRouter () {
     <Router>
       <Header />
         <Routes>
-          {/* TODO: if not logged -> /login */}
           <Route path="/login/" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/user/" element={<User />} />

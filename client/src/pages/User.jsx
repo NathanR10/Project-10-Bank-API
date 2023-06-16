@@ -1,30 +1,84 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { editUserName, getUserData } from '../reducers/authSlice';
 
 export default function User () {
-  const token = useSelector((state) => state.auth.token)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const firstName = useSelector(state => state.auth.firstName)
+  const lastName = useSelector(state => state.auth.lastName)
+
+  const [showEdit, setShowEdit] = useState(false)
+  const [newFirstName, setNewFirstName] = useState('')
+  const [newLastName, setNewLastName] = useState('')
+
+  const handleChangeNewFirstName = (e) => {
+    setNewFirstName(e.target.value)
+  };
+
+  const handleChangeNewLastName = (e) => {
+    setNewLastName(e.target.value)
+  };
 
   useEffect(() => {
-    axios.post('http://localhost:3001/api/v1/user/profile', null, {
-      headers: {
-        authorization: `Bearer ${token}`
-      }
-    })
-    .catch((err) => {
-      console.log('Invalid token: ' + err)
-      // TODO: clear token & localStorage
-      return navigate('/login')
-    })
+    dispatch(getUserData())
+      .then((res) => {
+        if (res.payload.succes === false) {
+          return navigate('/login')
+        }
+      })
   }, [])
   
   return (
     <main className="main bg-dark">
       <div className="header">
-        <h1>Welcome back<br />Tony Jarvis!</h1>
-        <button className="edit-button">Edit Name</button>
+        <h1>
+          Welcome back<br />
+        {showEdit
+        ? <div className='edit-button-gap'>
+            <input
+              className="edit-button-name"
+              type="text"
+              placeholder={firstName}
+              value={newFirstName} onChange={handleChangeNewFirstName}
+            />
+            <input
+              className="edit-button-name"
+              type="text"
+              placeholder={lastName}
+              value={newLastName} onChange={handleChangeNewLastName}
+            />
+          </div>
+        : <div>
+            <span className='user-name'>{firstName}</span>
+            &nbsp;
+            <span className='user-name'>{lastName}{lastName ? '!' : '...'}</span>
+          </div>}
+        </h1>
+        {showEdit
+        ? <div className='edit-button-gap'>
+            <button
+              onClick={() => {
+                setShowEdit(false)
+                dispatch(editUserName({ firstName: newFirstName, lastName: newLastName }))
+              }}
+              className="edit-button"
+            >
+              Save
+            </button>
+            <button
+              onClick={() => {
+                setShowEdit(false)
+                setNewFirstName('')
+                setNewLastName('')
+              }}
+              className="edit-button"
+            >
+              Cancel
+            </button>
+          </div>
+        : <button onClick={() => {setShowEdit(true)}} className="edit-button">Edit Name</button>}
       </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">

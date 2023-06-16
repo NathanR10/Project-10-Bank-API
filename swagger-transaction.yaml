@@ -1,0 +1,172 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /transactions/{accounId}:
+    get:
+      tags:
+        - Transactions
+      summary: Retrieve all transactions of an account
+      description: API to retrieve all transactions of an account
+      parameters:
+        - in: path
+          type: number
+          name: accountId
+          description: Account id
+          required: true
+          
+        - in: header
+          name: token
+          type: string
+          description: User token
+          required: true
+
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successfully Retrieved Transactions
+          schema:
+            $ref: '#/definitions/Transactions'
+        '400':
+          description: Invalid Fields
+          schema:
+            type: object
+            properties: 
+              errorLabel:
+                type: string
+                example: Invalid token | Account not found
+        '500':
+          description: Internal Server Error
+
+  /transactions/{accounId}/{transactionId}:
+    get:
+      tags:
+        - Transactions
+      summary: Retrieve one specific transaction of an account
+      description: API to retrieve one specific transaction of an account
+      parameters:
+        - in: path
+          name: accountId
+          type: number
+          description: Account id
+          required: true
+          schema:
+            type: object
+            properties: 
+              accountId:
+                type: number
+                example: 42
+              transactionID:
+                type: number
+                example: 278
+              token:
+                type: string
+                example: jhgsdqHDFqsdf.q98sdfù+sfgdfrez
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successfully Retrieved Transaction
+          schema:
+            $ref: '#/definitions/Transactions'
+        '400':
+          description: Invalid Fields
+          schema:
+            type: object
+            properties: 
+              errorLabel:
+                type: string
+                example: Invalid token | Account not found | Transaction not found
+        '500':
+          description: Internal Server Error
+
+  /transactions/{accounId}/{transactionId}/edit:
+    put:
+      tags:
+        - Transactions
+      summary: Modify a transaction of an account
+      description: API to modify a transaction of an account
+      parameters:
+        - in: body
+          name: body
+          description: Transaction Payload
+          required: true
+          schema:
+            type: object
+            properties: 
+              payload:
+                type: object
+                properties: 
+                  category:
+                    type: string
+                  notes:
+                    type: string
+              accountId:
+                type: number
+                example: 42
+              transactionID:
+                type: number
+                example: 278
+              token:
+                type: string
+                example: jhgsdqHDFqsdf.q98sdfù+sfgdfrez
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successfully Retrieved Transaction
+          schema:
+            $ref: '#/definitions/Transactions'
+        '400':
+          description: Invalid Fields
+          schema:
+            type: object
+            properties: 
+              errorLabel:
+                type: string
+                example: Invalid token | Account not found | Transaction not found | Invalid payload
+        '500':
+          description: Internal Server Error
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  Transactions:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        date:
+          type: string
+          format: date
+        description:
+          type: string
+        amount:
+          type: number
+        balance:
+          type: number
+        category:
+          type: string
+        notes:
+          type: string
+      required:
+        - id
+        - date
+        - description
+        - amount
+        - balance
+        - category
