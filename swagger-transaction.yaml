@@ -58,18 +58,19 @@ paths:
           type: number
           description: Account id
           required: true
-          schema:
-            type: object
-            properties: 
-              accountId:
-                type: number
-                example: 42
-              transactionID:
-                type: number
-                example: 278
-              token:
-                type: string
-                example: jhgsdqHDFqsdf.q98sdfù+sfgdfrez
+          
+        - in: path
+          name: transactionId
+          type: number
+          description: Transaction id
+          required: true
+          
+        - in: header
+          name: token
+          type: string
+          description: User token
+          required: true
+
       produces:
         - application/json
       responses:
@@ -95,6 +96,24 @@ paths:
       summary: Modify a transaction of an account
       description: API to modify a transaction of an account
       parameters:
+        - in: path
+          name: accountId
+          type: number
+          description: Account id
+          required: true
+          
+        - in: path
+          name: transactionId
+          type: number
+          description: Transaction id
+          required: true
+          
+        - in: header
+          name: token
+          type: string
+          description: User token
+          required: true
+
         - in: body
           name: body
           description: Transaction Payload
@@ -102,22 +121,10 @@ paths:
           schema:
             type: object
             properties: 
-              payload:
-                type: object
-                properties: 
-                  category:
-                    type: string
-                  notes:
-                    type: string
-              accountId:
-                type: number
-                example: 42
-              transactionID:
-                type: number
-                example: 278
-              token:
+              category:
                 type: string
-                example: jhgsdqHDFqsdf.q98sdfù+sfgdfrez
+              notes:
+                type: string
       produces:
         - application/json
       responses:
