@@ -8,7 +8,7 @@ export default function Header () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const isLogged = useSelector(state => state.auth.isLogged)
+  const isLogged = JSON.parse(sessionStorage.getItem('token') ? sessionStorage.getItem('token') : localStorage.getItem('token'))
   const firstName = useSelector(state => state.auth.firstName)
 
   const handleLogout = () => {

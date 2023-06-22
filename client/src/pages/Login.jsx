@@ -6,7 +6,7 @@ import { getToken } from '../reducers/authSlice';
 export default function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const isLogged = JSON.parse(localStorage.getItem('token'))?.token
+  const isLogged = JSON.parse(sessionStorage.getItem('token') ? sessionStorage.getItem('token') : localStorage.getItem('token'))
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
