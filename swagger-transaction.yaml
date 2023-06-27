@@ -9,8 +9,10 @@ basePath: /api/v1
 schemes:
   - http
 paths:
-  /transactions/{accounId}:
+  /transactions/{accountId}:
     get:
+      security:
+        - Bearer: []
       tags:
         - Transactions
       summary: Retrieve all transactions of an account
@@ -21,13 +23,11 @@ paths:
           name: accountId
           description: Account id
           required: true
-          
         - in: header
           name: token
           type: string
           description: User token
           required: true
-
       produces:
         - application/json
       responses:
@@ -46,7 +46,7 @@ paths:
         '500':
           description: Internal Server Error
 
-  /transactions/{accounId}/{transactionId}:
+  /transactions/{accountId}/{transactionId}:
     get:
       tags:
         - Transactions
@@ -58,19 +58,16 @@ paths:
           type: number
           description: Account id
           required: true
-          
         - in: path
           name: transactionId
           type: number
           description: Transaction id
           required: true
-          
         - in: header
           name: token
           type: string
           description: User token
           required: true
-
       produces:
         - application/json
       responses:
@@ -89,11 +86,11 @@ paths:
         '500':
           description: Internal Server Error
 
-  /transactions/{accounId}/{transactionId}/edit:
+  /transactions/{accountId}/{transactionId}/edit:
     put:
       tags:
         - Transactions
-      summary: Modify a transaction's informations of an account
+      summary: Modify a transaction's information of an account
       description: API to modify a transaction of an account
       parameters:
         - in: path
@@ -101,19 +98,16 @@ paths:
           type: number
           description: Account id
           required: true
-          
         - in: path
           name: transactionId
           type: number
           description: Transaction id
           required: true
-          
         - in: header
           name: token
           type: string
           description: User token
           required: true
-
         - in: body
           name: body
           description: Transaction Payload
@@ -125,12 +119,11 @@ paths:
                 type: string
               notes:
                 type: string
-
       produces:
         - application/json
       responses:
         '200':
-          description: Successfully Retrieved Transaction
+          description: Successfully Modified Transaction
           schema:
             $ref: '#/definitions/Transaction'
         '400':
@@ -144,32 +137,28 @@ paths:
         '500':
           description: Internal Server Error
 
-
-  /transactions/{accounId}/{transactionId}/add:
+  /transactions/{accountId}/{transactionId}/add:
     post:
       tags:
         - Transactions
-      summary: Add to a transaction informations of an account
-      description: API to modify a transaction of an account
+      summary: Add transaction information to an account
+      description: API to add a transaction to an account
       parameters:
         - in: path
           name: accountId
           type: number
           description: Account id
           required: true
-          
         - in: path
           name: transactionId
           type: number
           description: Transaction id
           required: true
-          
         - in: header
           name: token
           type: string
           description: User token
           required: true
-
         - in: body
           name: body
           description: Transaction Payload
@@ -184,12 +173,11 @@ paths:
             required:
               - category
               - notes
-
       produces:
         - application/json
       responses:
         '200':
-          description: Successfully Retrieved Transaction
+          description: Successfully Added Transaction
           schema:
             $ref: '#/definitions/Transaction'
         '400':
@@ -203,37 +191,33 @@ paths:
         '500':
           description: Internal Server Error
 
-
-  /transactions/{accounId}/{transactionId}/delete:
+  /transactions/{accountId}/{transactionId}/delete:
     delete:
       tags:
         - Transactions
-      summary: Delete a transaction's informations of an account
-      description: API to modify a transaction of an account
+      summary: Delete a transaction's information of an account
+      description: API to delete a transaction of an account
       parameters:
         - in: path
           name: accountId
           type: number
           description: Account id
           required: true
-          
         - in: path
           name: transactionId
           type: number
           description: Transaction id
           required: true
-          
         - in: header
           name: token
           type: string
           description: User token
           required: true
-
       produces:
         - application/json
       responses:
         '200':
-          description: Successfully Retrieved Transaction
+          description: Successfully Deleted Transaction
           schema:
             $ref: '#/definitions/Transaction'
         '400':
